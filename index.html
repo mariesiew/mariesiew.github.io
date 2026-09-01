@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Marie-Therese Siew</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Karla:wght@400;500;600&display=swap">
+  <style>
+/* ═══ Design Tokens ═══ */
+:root {
+  --ink: #1e1b27;
+  --body-color: #4a4558;
+  --accent: #7c5cbf;
+  --accent-hover: #614a9a;
+  --accent-soft: #f0ecf8;
+  --surface: #faf9fc;
+  --surface-raised: #ffffff;
+  --border: #e2dfe9;
+  --muted: #756e82;
+  --tag-bg: #f0ecf8;
+  --tag-text: #7c5cbf;
+  --link: #c2185b;
+  --link-hover: #9c1449;
+  --photo-bg: #dce1e8;
+
+  --font-display: 'Newsreader', Georgia, 'Times New Roman', serif;
+  --font-body: 'Karla', system-ui, -apple-system, sans-serif;
+
+  --measure: 56rem;
+  --nav-height: 3.75rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ink: #e2e5eb;
+    --body-color: #a8adb9;
+    --accent: #b49ce0;
+    --accent-hover: #c9b6ea;
+    --accent-soft: #1e1a2c;
+    --surface: #110f18;
+    --surface-raised: #1a1724;
+    --border: #2c2839;
+    --muted: #7e7990;
+    --tag-bg: #1e1a2c;
+    --tag-text: #b49ce0;
+    --link: #f06292;
+    --link-hover: #f48cb5;
+    --photo-bg: #2c2839;
+  }
+}
+:root[data-theme="dark"] {
+  --ink: #e5e2ec;
+  --body-color: #ada8ba;
+  --accent: #b49ce0;
+  --accent-hover: #c9b6ea;
+  --accent-soft: #1e1a2c;
+  --surface: #110f18;
+  --surface-raised: #1a1724;
+  --border: #2c2839;
+  --muted: #7e7990;
+  --tag-bg: #1e1a2c;
+  --tag-text: #b49ce0;
+  --link: #f06292;
+  --link-hover: #f48cb5;
+  --photo-bg: #2c2839;
+}
+
+/* ═══ Base ═══ */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--surface);
+  color: var(--body-color);
+  font-family: var(--font-body);
+  font-size: 1.08rem;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  color: var(--ink);
+  text-wrap: balance;
+  line-height: 1.25;
+}
+
+a {
+  color: var(--link);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+a:hover { color: var(--link-hover); }
+a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* ═══ Layout ═══ */
+.container {
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* ═══ Navigation ═══ */
+.site-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+.site-nav .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--nav-height);
+  gap: 1rem;
+}
+.site-name {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--ink);
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+}
+.nav-links {
+  display: flex;
+  gap: 0.15rem;
+  list-style: none;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+.nav-links li { display: contents; }
+.nav-links a {
+  display: block;
+  padding: 0.3rem 0.7rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--muted);
+  border-radius: 4px;
+  transition: color 0.15s, background 0.15s;
+  cursor: pointer;
+}
+.nav-links a:hover { color: var(--ink); background: transparent; }
+.nav-links a.active {
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+
+/* ═══ Page sections ═══ */
+.page { padding: 2.75rem 0 4rem; }
+.page[hidden] { display: none !important; }
+
+.page-title {
+  font-size: 1.85rem;
+  font-weight: 500;
+  margin-bottom: 2rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--border);
+}
+
+/* ═══ About ═══ */
+.about-header {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  gap: 2rem;
+  align-items: start;
+  margin-bottom: 2.5rem;
+}
+.photo-placeholder {
+  width: 150px;
+  height: 150px;
+  border-radius: 8px;
+  background: var(--photo-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.about-intro h1 {
+  font-size: 2.1rem;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+}
+.about-intro .title-line {
+  font-size: 1.05rem;
+  color: var(--muted);
+  margin-bottom: 1rem;
+  line-height: 1.45;
+}
+.about-intro .bio {
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.section-label {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.65rem;
+}
+
+.interests {
+  margin-bottom: 2rem;
+}
+.interest-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.interest-tag {
+  display: inline-block;
+  padding: 0.22rem 0.6rem;
+  background: var(--tag-bg);
+  color: var(--tag-text);
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-radius: 3px;
+}
+
+.research-boxes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+.research-box {
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1.1rem 1.25rem;
+}
+.research-box h3 {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 0.6rem;
+  line-height: 1.3;
+}
+.research-box ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.research-box li {
+  font-size: 0.93rem;
+  line-height: 1.45;
+  padding-left: 0.85rem;
+  position: relative;
+}
+.research-box li::before {
+  content: '\2022';
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+}
+
+.contact-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  margin-bottom: 2.75rem;
+  font-size: 1rem;
+}
+.contact-row a { font-weight: 500; }
+
+.divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 0 0 2rem;
+}
+
+.news-section { margin-top: 0; }
+.news-scroll {
+  max-height: 28rem;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+.news-scroll::-webkit-scrollbar { width: 4px; }
+.news-scroll::-webkit-scrollbar-track { background: transparent; }
+.news-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+.news-scroll::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+.news-fade {
+  position: relative;
+}
+.news-fade::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2.5rem;
+  background: linear-gradient(to bottom, transparent, var(--surface));
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+.news-fade.scrolled-bottom::after { opacity: 0; }
+.news-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+.news-list li {
+  font-size: 1rem;
+  display: flex;
+  gap: 0.75rem;
+  line-height: 1.55;
+}
+.news-date {
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  min-width: 6.5rem;
+  font-size: 0.95rem;
+}
+
+/* ═══ Publications ═══ */
+.pub-year-heading {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--accent);
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.3rem;
+  border-bottom: 1px solid var(--border);
+}
+.pub-year-heading:first-of-type { margin-top: 0; }
+
+.pub-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  margin-bottom: 0.5rem;
+}
+.pub-item {
+  font-size: 0.97rem;
+  line-height: 1.65;
+  color: var(--ink);
+}
+.pub-num {
+  font-weight: 600;
+  color: var(--muted);
+  margin-right: 0.15rem;
+}
+.pub-name {
+  color: var(--accent);
+}
+.pub-item a {
+  color: var(--link);
+}
+.pub-item a:hover {
+  color: var(--link-hover);
+}
+.pub-award {
+  font-weight: 600;
+  color: var(--link);
+}
+
+/* ═══ Group ═══ */
+.group-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+.group-name {
+  font-weight: 600;
+  color: var(--ink);
+  font-size: 1rem;
+  line-height: 1.4;
+}
+.group-detail {
+  color: var(--accent);
+  font-size: 0.93rem;
+  line-height: 1.4;
+}
+
+/* ═══ Experience ═══ */
+.exp-section { margin-bottom: 2.5rem; }
+.exp-section:last-child { margin-bottom: 0; }
+.exp-section h2 {
+  font-size: 1.25rem;
+  font-weight: 500;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--border);
+}
+.exp-entry {
+  margin-bottom: 1.4rem;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.15rem 1.5rem;
+}
+.exp-role {
+  font-weight: 600;
+  color: var(--ink);
+  font-size: 1.02rem;
+}
+.exp-dates {
+  font-size: 0.93rem;
+  color: var(--muted);
+  text-align: right;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.exp-org {
+  color: var(--accent);
+  font-size: 0.97rem;
+  grid-column: 1 / -1;
+}
+.exp-desc {
+  font-size: 0.97rem;
+  color: var(--body-color);
+  grid-column: 1 / -1;
+  margin-top: 0.15rem;
+  line-height: 1.55;
+}
+
+/* ═══ Footer ═══ */
+.site-footer {
+  padding: 2rem 0;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+/* ═══ Responsive ═══ */
+@media (max-width: 600px) {
+  .about-header {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: center;
+  }
+  .photo-placeholder { width: 120px; height: 120px; }
+  .interest-tags { justify-content: center; }
+  .contact-row { justify-content: center; }
+  .research-boxes { grid-template-columns: 1fr; }
+  .exp-entry { grid-template-columns: 1fr; }
+  .exp-dates { text-align: left; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; }
+}
+  </style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="site-nav">
+  <div class="container">
+    <span class="site-name" data-nav="about" role="button" tabindex="0">Marie-Therese Siew</span>
+    <ul class="nav-links">
+      <li><a class="active" data-nav="about" role="button" tabindex="0">About</a></li>
+      <li><a data-nav="publications" role="button" tabindex="0">Publications</a></li>
+      <li><a data-nav="group" role="button" tabindex="0">Group</a></li>
+      <li><a data-nav="teaching" role="button" tabindex="0">Teaching</a></li>
+      <li><a data-nav="experience" role="button" tabindex="0">Service</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main class="container">
+
+  <!-- ═══ About ═══ -->
+  <section class="page" id="page-about">
+    <div class="about-header">
+      <div class="photo-placeholder">Photo</div>
+      <div class="about-intro">
+        <h1>Marie-Therese Siew</h1>
+        <p class="bio">
+          I&rsquo;m currently a Faculty Early Career Award Fellow / Lecturer in the Information Systems Technology and Design Pillar (ISTD) at the Singapore University of Technology and Design (SUTD).
+        </p>
+        <p class="bio" style="margin-top:0.6rem;">
+          I was a postdoctoral researcher in the ECE department, Carnegie Mellon University, advised by Prof Carlee Joe-Wong, till Dec 2023. I received my PhD from ISTD, SUTD in 2021, advised by Prof Tony Quek and Dr Desmond Cai. Prior to that, I obtained my BSc. in Mathematical Sciences from Nanyang Technological University, Singapore in 2016.
+        </p>
+      </div>
+    </div>
+
+    <div class="contact-row">
+      <a href="#">Email</a>
+      <a href="#">Google Scholar</a>
+      <a href="#">GitHub</a>
+      <a href="#">LinkedIn</a>
+    </div>
+
+    <div class="interests">
+      <p class="section-label">Research Interests</p>
+      <p style="font-size:1rem; line-height:1.7; margin-bottom:1.25rem;">A central theme of my research is reliable and trustworthy distributed edge intelligence, enabled by wireless networks. My work focuses on both efficiency (accuracy, delay, energy), and metrics beyond efficiency such as incentive-awareness, privacy, fairness, safety, and sustainability. Present and past topics that I work on include:</p>
+      <div class="research-boxes">
+        <div class="research-box">
+          <h3>Edge and Cloud Computing</h3>
+          <ul>
+            <li>Edge offloading and incentives</li>
+            <li>Resilient edge intelligence</li>
+            <li>Carbon-aware distributed computing and learning</li>
+            <li>AI-and-RAN</li>
+          </ul>
+        </div>
+        <div class="research-box">
+          <h3>Federated and Distributed Learning</h3>
+          <ul>
+            <li>Multiple model federated learning</li>
+            <li>Asynchrony in federated learning, and decentralized FL</li>
+            <li>Federated fine-tuning of larger models</li>
+            <li>Privacy at the network edge</li>
+          </ul>
+        </div>
+        <div class="research-box">
+          <h3>Wireless Network Optimization</h3>
+          <ul>
+            <li>Fairness, energy efficiency, latency optimization</li>
+            <li>Satellite, UAV, and IoT networks</li>
+            <li>LLM and agents for networks</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="news-section">
+      <p class="section-label">News</p>
+      <div class="news-fade" id="news-fade">
+        <div class="news-scroll" id="news-scroll">
+          <ul class="news-list">
+            <li><span class="news-date">Sep 2026</span><span>Welcome visiting PhD students Xinyue, Xufei, and Nanjing!</span></li>
+            <li><span class="news-date">Aug 2026</span><span>Giving a talk at CWI Amsterdam.</span></li>
+            <li><span class="news-date">Aug 2026</span><span>Attending <span style="color:var(--accent)">UAI</span>!</span></li>
+            <li><span class="news-date">Aug 2026</span><span>Welcome visiting PhD student Qiankun!</span></li>
+            <li><span class="news-date">Aug 2026</span><span>Will be TPC Co-Chair of Workshop on Advanced Array Signal Processing and Parameter Estimation for Space-Air-Ground-Ocean Integrated Networks, <span style="color:var(--accent)">ICAIT 2026</span>.</span></li>
+            <li><span class="news-date">Jul 2026</span><span>Welcome Xing Chang to our group as a postdoctoral researcher!</span></li>
+            <li><span class="news-date">Jul 2026</span><span>Paper on zeroth-order FL for UAV accepted to <span style="color:var(--accent)">WiMob</span>. Congrats Haoqing!</span></li>
+            <li><span class="news-date">Jul 2026</span><span>2 papers accepted at <span style="color:var(--accent)">Globecom</span>, on rate-splitting for LEO uplink coexistence, and energy-efficient secure near-field sensing with Mamba. Congrats Qiqi and Qiulei!</span></li>
+            <li><span class="news-date">Jul 2026</span><span>Welcome visiting professors Prof Liu Song and Prof Tang Wanwei!</span></li>
+            <li><span class="news-date">Jun 2026</span><span>Welcome Binquan to our group as a postdoctoral researcher!</span></li>
+            <li><span class="news-date">Jun 2026</span><span>Honoured to be serving as the TPC Co-Chair of the Ubiquitous Connectivity for Agentic and Physical AI (Con4AP) Workshop, <span style="color:var(--accent)">ACM UbiComp/ISWC 2026</span>. <a href="https://con4ap.github.io/">[Call for papers!]</a></span></li>
+            <li><span class="news-date">Jun 2026</span><span>Our paper on dealing with extreme staleness in federated learning via projections has been accepted at <span style="color:var(--accent)">UAI</span>! Congrats Haoran!</span></li>
+            <li><span class="news-date">Jun 2026</span><span>Our paper on ambient backscatter communication has been accepted at <span style="color:var(--accent)">IEEE PIMRC</span>! Congrats Yuxin!</span></li>
+            <li><span class="news-date">Jun 2026</span><span>We&rsquo;re organizing a Themed Collection on UAV-Enabled Air-Ground Integrated Networks and Intelligent Optimization, in <em>Computers, Materials &amp; Continua</em>.</span></li>
+            <li><span class="news-date">Jun 2026</span><span>I&rsquo;ll be giving an (online) talk at the Beijing University of Posts and Telecommunications!</span></li>
+            <li><span class="news-date">May 2026</span><span>Our paper on symbol offset estimation in ambient backscatter communication has been accepted at <span style="color:var(--accent)">IEEE TVT</span>! Congrats Yuxin!</span></li>
+            <li><span class="news-date">May 2026</span><span>Our paper on LEO satellite uplink coexistence analysis has been accepted at <span style="color:var(--accent)">IEEE TWC</span>! Congrats Qiqi!</span></li>
+            <li><span class="news-date">Apr 2026</span><span>Gave a talk at <a href="https://lorong.ai/index.html">Lorong AI</a> on Federated Learning. <a href="https://luma.com/km82xqa1">[Link]</a> Thankful for the opportunity!</span></li>
+            <li><span class="news-date">Apr 2026</span><span>Serving as Track Chair of <span style="color:var(--accent)">WECE 2026</span>!</span></li>
+            <li><span class="news-date">Apr 2026</span><span>I joined the TPC for <span style="color:var(--accent)">IEEE INFOCOM 2027</span>, <span style="color:var(--accent)">IEEE MASS 2026</span>, and <span style="color:var(--accent)">IEEE VTS APWCS 2026</span>.</span></li>
+            <li><span class="news-date">Mar 2026</span><span>Our symbol detection in ambient backscatter communications paper got accepted at <span style="color:var(--accent)">IEEE TWC</span>! Congrats Yuxin!</span></li>
+            <li><span class="news-date">Mar 2026</span><span>I joined the TPC for <span style="color:var(--accent)">ACM Sigmetrics&rsquo; Student Research Competition 2026</span>!</span></li>
+            <li><span class="news-date">Feb 2026</span><span>Welcome visiting PhD student Haoqing!</span></li>
+            <li><span class="news-date">Jan 2026</span><span>Our paper received the Best Student Paper Award at the <span style="color:var(--accent)">AAAI ML4Wireless Workshop</span>! Congrats Nan and all co-authors!</span></li>
+            <li><span class="news-date">Jan 2026</span><span>I joined the TPC for <span style="color:var(--accent)">WiOpt 2026</span>, <span style="color:var(--accent)">Netcompute @ Infocom 26</span>, and <span style="color:var(--accent)">AutoSys @ Mobisys 26</span>.</span></li>
+            <li><span class="news-date">Jan 2026</span><span>Our paper on fair PRB allocation has been accepted at <span style="color:var(--accent)">IEEE WCNC</span>! Congrats Avirup!</span></li>
+            <li><span class="news-date">Dec 2025</span><span>Welcome visiting PhD students Yuxin and Shiran!</span></li>
+            <li><span class="news-date">Dec 2025</span><span>Attended <span style="color:var(--accent)">GLOBECOM 25</span>, presented our work on game theory in Open RAN, and was honoured to be a session chair for the Open RAN &amp; Resource Allocation Session.</span></li>
+            <li><span class="news-date">Nov 2025</span><span>Our paper on decentralized FL in dynamic networks has been accepted at <span style="color:var(--accent)">IEEE TMC</span>! Congrats Baosheng!</span></li>
+            <li><span class="news-date">Nov 2025</span><span>Our papers on ML for vegetation attenuation measurement and edge fine-tuning of diffusion models have been accepted at the <span style="color:var(--accent)">AAAI workshop ML4Wireless</span>. Congrats Nan and Jiajia!</span></li>
+            <li><span class="news-date">Oct 2025</span><span>Our paper on clustering for decentralized Federated Learning has been accepted to <span style="color:var(--accent)">IEEE TMC</span>!</span></li>
+            <li><span class="news-date">Oct 2025</span><span>1st author paper on resilient edge computing migrations has been accepted to <span style="color:var(--accent)">IEEE TSC</span>! <a href="https://arxiv.org/abs/2209.14399">[Preprint]</a></span></li>
+            <li><span class="news-date">Oct 2025</span><span>Our paper on accelerating federated learning in satellite networks has been accepted to <span style="color:var(--accent)">IEEE TrustCom 25</span>! <a href="https://arxiv.org/pdf/2509.12222">[Preprint]</a></span></li>
+            <li><span class="news-date">Sep 2025</span><span>Our paper on semi-async federated learning has been accepted to <span style="color:var(--accent)">IEEE ICCT 25</span>!</span></li>
+            <li><span class="news-date">Sep 2025</span><span>Welcome visiting PhD students Qiulei, Yutian and Qiqi!</span></li>
+            <li><span class="news-date">Aug 2025</span><span>Our research on multi-model federated learning got featured by LENS, SUTD&rsquo;s library newsletter! <a href="https://mylibrary.sutd.edu.sg/lens-0">[Link]</a></span></li>
+            <li><span class="news-date">Aug 2025</span><span>Welcome visiting PhD students Wen Wen and Xinran!</span></li>
+            <li><span class="news-date">Jul 2025</span><span>Our paper on game theory in Open RAN has been accepted to <span style="color:var(--accent)">IEEE GLOBECOM 25</span>! <a href="https://arxiv.org/abs/2509.19392">[Preprint]</a></span></li>
+            <li><span class="news-date">Jun 2025</span><span>Welcome visiting PhD students Boxuan and Jiajia!</span></li>
+            <li><span class="news-date">Jun 2025</span><span>Honored to serve as the publication chair for <span style="color:var(--accent)">IEEE TrustCom 2025</span> <a href="https://ieee-aiplus-2025.org/callFoePapers/Trustcom-CallforPaper.html">[Call for papers!]</a> and <span style="color:var(--accent)">IEEE BigDataSE 2025</span> <a href="https://ieee-aiplus-2025.org/callFoePapers/BigDataSE-CallforPaper.html">[Call for papers!]</a></span></li>
+            <li><span class="news-date">Jun 2025</span><span>Our paper on Decentralized FL in IoT networks has been accepted by <span style="color:var(--accent)">IEEE IoTJ</span>! <a href="https://ieeexplore.ieee.org/document/11067955">[Link]</a></span></li>
+            <li><span class="news-date">May 2025</span><span>Our paper on VLEO/LEO cross-layer topology optimization has been accepted by <span style="color:var(--accent)">IEEE TWC</span>! <a href="https://www.techrxiv.org/doi/full/10.36227/techrxiv.172054205.51243418/v1">[Preprint]</a></span></li>
+            <li><span class="news-date">May 2025</span><span>1st author paper on fair multiple-model Federated Learning has been accepted by <span style="color:var(--accent)">IEEE TON</span>! <a href="https://arxiv.org/abs/2404.13841">[Preprint]</a></span></li>
+            <li><span class="news-date">May 2025</span><span>Starting a Temasek Laboratories Seed project &ldquo;Decentralized Federated ML at Scale&rdquo;. Thank you TL!</span></li>
+            <li><span class="news-date">Apr 2025</span><span>Our paper on clustering for client sampling in multiple-model FL has been accepted at <span style="color:var(--accent)">IEEE VTC-Spring 2025</span>!</span></li>
+            <li><span class="news-date">Apr 2025</span><span>Congratulations to capstone teams on a successful showcase at InspireCon 2025! Congrats to Fitback on winning the 1st place, Design AI Award! <a href="https://www.zaobao.com.sg/news/singapore/story20250414-6173206">[Lianhe Zaobao press release]</a> <a href="https://www.sutd.edu.sg/media-releases-listing/sutd-students-partner-top-firms-including-loreal-db-schenker-changi-airport-group-in-first-inspirecon-showcase/">[SUTD media release]</a></span></li>
+            <li><span class="news-date">Feb 2025</span><span>Our work won 1st place in the Multi-Agents Track, LLM Agents MOOC Hackathon hosted by Berkeley RDI. <a href="https://happyeureka.github.io/damcs/">[Project website]</a> <a href="https://arxiv.org/pdf/2502.05453">[Paper]</a></span></li>
+            <li><span class="news-date">Jan 2025</span><span>I joined the TPC for <span style="color:var(--accent)">WiOpt 25</span>, <span style="color:var(--accent)">IEEE MASS 25</span>, and <span style="color:var(--accent)">ACM/SIGAPP SAC 2025</span>.</span></li>
+            <li><span class="news-date">Jan 2025</span><span>Welcome visiting PhD student Yu Yan, and undergraduate researchers Zhan Kang, Alvin, and Shreeaditi!</span></li>
+            <li><span class="news-date">Dec 2024</span><span>We have 2 papers accepted at AAAI workshops! One on adversarially robust human-in-the-loop learning (at <span style="color:var(--accent)">AI4WCN</span>) <a href="https://openreview.net/forum?id=4Cdf8XL1YC">[Paper]</a>, and another on LLM agents cooperative planning (at <span style="color:var(--accent)">MARW</span>) <a href="https://happyeureka.github.io/damcs/">[Project website]</a> <a href="https://arxiv.org/pdf/2502.05453">[Paper]</a>.</span></li>
+            <li><span class="news-date">Dec 2024</span><span>I&rsquo;ll be a judge for the What the Hack Hackathon 2024, held by SUTD, and organized by our students.</span></li>
+            <li><span class="news-date">Dec 2024</span><span>Our fall semester has ended. I taught <span style="color:var(--accent)">Computational Thinking and Design (CTD)</span> and <span style="color:var(--accent)">Capstone</span>, and met many talented, creative and enthusiastic first year and final year students!</span></li>
+            <li><span class="news-date">Dec 2024</span><span>Visiting Masters student Ruide (from SUSTech) is starting his research visit at SUTD.</span></li>
+            <li><span class="news-date">Dec 2024</span><span>Our paper on inter-satellite data transfer topology optimization has been published in <span style="color:var(--accent)">IEEE IoTJ</span>! <a href="https://ieeexplore.ieee.org/abstract/document/10772451">[Paper]</a> Congrats Kai Han!</span></li>
+            <li><span class="news-date">Aug 2024</span><span>Received the Early Career Award at the Singapore MOE START Award Ceremony. <a href="https://www.moe.gov.sg/news/press-releases/20240814-28-young-singaporeans-receive-awards-to-pursue-careers-in-academia-and-research">[Link]</a></span></li>
+            <li><span class="news-date">Jul 2024</span><span>Our paper on topology optimization for satellite communication has been accepted at <span style="color:var(--accent)">Globecom 2024</span>!</span></li>
+            <li><span class="news-date">Jul 2024</span><span>We won the Best Poster Award at <span style="color:var(--accent)">IEEE ICDCS 2024</span>! <a href="https://haoran-zh.github.io/Publications/ICDCS_Poster_MMFL_optimal_sampling__gradient_norm_.pdf">[Preprint]</a> <a href="https://haoran-zh.github.io/data/ICDCS_poster.pdf">[Poster]</a></span></li>
+            <li><span class="news-date">May 2024</span><span>Attended CPS-IoT Week at Hong Kong, where Hanqing presented our work at the <span style="color:var(--accent)">FMSys Workshop</span>.</span></li>
+            <li><span class="news-date">May 2024</span><span>SUTD UROP students Aditya Kumar and Goh Jet Wei, and recent alumni Lee Wai Shun have joined the lab.</span></li>
+            <li><span class="news-date">May 2024</span><span>Our work on digital twin-assisted semi federated learning has been accepted at <span style="color:var(--accent)">China Communications</span>. <a href="https://ieeexplore.ieee.org/document/10495817">[Link]</a></span></li>
+            <li><span class="news-date">May 2024</span><span>Our paper on <a href="https://users.ece.cmu.edu/~haoranz5/Publications/ICDCS_Poster_MMFL_optimal_sampling__gradient_norm_.pdf">optimal sampling for multiple-task FL</a> has been accepted as a poster at <span style="color:var(--accent)">IEEE ICDCS 2024</span>!</span></li>
+            <li><span class="news-date">Mar 2024</span><span>Our paper on <a href="https://arxiv.org/pdf/2403.16809">LLM-Based Digital Twins for optimizing human-in-the-loop systems</a> has been accepted at <span style="color:var(--accent)">FMSys</span>, held at CPS-IoT Week.</span></li>
+            <li><span class="news-date">Mar 2024</span><span>I&rsquo;ve started a new journey! Joining ISTD, SUTD as a Faculty Early Career Award (FECA) Fellow / Lecturer!</span></li>
+            <li><span class="news-date">Dec 2023</span><span>I&rsquo;ve concluded my postdoc at Carnegie Mellon University and headed back to Singapore!</span></li>
+            <li><span class="news-date">Oct 2023</span><span>Our paper on edge computing resource pricing and sharing models has been accepted at <span style="color:var(--accent)">IEEE Transactions on Services Computing</span>!</span></li>
+            <li><span class="news-date">Oct 2023</span><span>Attended <span style="color:var(--accent)">ACM Mobihoc</span>. Served as a panellist for the N2 Women Event: &ldquo;Charting your Academic Journey: Wisdom from Women in Research&rdquo;.</span></li>
+            <li><span class="news-date">Aug 2023</span><span>Our paper on Integrated sensing and communication in TeraHertz networks has been accepted at <span style="color:var(--accent)">IEEE Globecom 2023</span>!</span></li>
+            <li><span class="news-date">Jul 2023</span><span>Our paper on Cache-enabled Federated Learning Networks has been accepted to <span style="color:var(--accent)">ACM Mobihoc 2023</span>!</span></li>
+            <li><span class="news-date">May 2023</span><span>Attended CPS-IoT Week at San Antonio! Our work on Fair Multiple-Model FL received the Best Poster Award at <span style="color:var(--accent)">IEEE/ACM IPSN 2023</span>! <a href="https://ipsn.acm.org/2023/awards.html">[Link]</a></span></li>
+            <li><span class="news-date">Mar 2023</span><span>Attended <span style="color:var(--accent)">IEEE CISS</span> at Baltimore! Presented our work on RL for rare events in edge computing and served as a session chair for Networks III.</span></li>
+            <li><span class="news-date">Jan 2023</span><span>Our paper on actor-critic RL for resilient resource allocation in edge computing has been accepted at <span style="color:var(--accent)">IEEE CISS</span>!</span></li>
+            <li><span class="news-date">Jan 2023</span><span>Our paper on differentially private Q-learning for MEC offloading has been accepted at <span style="color:var(--accent)">IEEE ICC</span>! <a href="https://arxiv.org/abs/2302.04608">[Link]</a></span></li>
+            <li><span class="news-date">Sep 2022</span><span>We organized the second ECOFEC: Workshop on the Economics of Fog and Edge Computing, at <span style="color:var(--accent)">IEEE SECON 2022</span>. <a href="https://secon2022.ieee-secon.org/ecofec-workshop-on-the-economics-of-fog-edge-and-cloud-computing/">[Workshop link]</a> <a href="https://secon2022.ieee-secon.org/program/">[Program]</a></span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider" style="margin-top:2.5rem;">
+
+    <div class="news-section">
+      <p class="section-label">Research Grants</p>
+      <ul class="news-list">
+        <li><span class="news-date">2026&ndash;2029</span><span>Task PI, IAF-ICP, SUTD-MediaTek Joint Laboratory, &ldquo;Towards Carbon-Aware Computing and Learning in Wireless Networks: Optimization, and Algorithms, and Analysis&rdquo;.</span></li>
+        <li><span class="news-date">2026&ndash;2029</span><span>Task Co-PI, IAF-ICP, SUTD-MediaTek Joint Laboratory, &ldquo;Towards Deployment of Large Language Models in Telecommunication Networks: Accuracy, Speed, Efficiency&rdquo;.</span></li>
+        <li><span class="news-date">2025&ndash;2026</span><span>PI, Temasek Laboratories TL@SUTD Seed Grant, &ldquo;Decentralized Federated ML at Scale: Analysis, Design and Evaluation&rdquo;. SGD&nbsp;$200,000.</span></li>
+      </ul>
+    </div>
+
+    <hr class="divider" style="margin-top:2.5rem;">
+
+    <div class="news-section">
+      <p class="section-label">Honours &amp; Awards</p>
+      <ul class="news-list" style="gap:0.4rem;">
+        <li>Best Student Paper Award, AAAI Machine Learning for Wireless Communication and Networks (ML4Wireless) Workshop, 2026.</li>
+        <li>First Place, Multi-Agents Track, LLM Agents MOOC Hackathon hosted by Berkeley RDI, 2025.</li>
+        <li>Best Poster Award, IEEE International Conference on Distributed Computing Systems (ICDCS), 2024.</li>
+        <li>Early Career Award, Singapore Ministry of Education (MOE) Teaching and Academic Research Talent (START) Scheme, 2024.</li>
+        <li>Best Poster Award, IEEE/ACM International Conference on Information Processing in Sensor Networks (IPSN), held at CPS-IoT Week, 2023.</li>
+        <li>SUTD Presidential Postdoctoral Fellowship (PPF), under the Singapore MOE START Scheme, 2021&ndash;2023.</li>
+        <li>A*Star Computing and Information Science Scholarship (ACIS), 2019&ndash;2020.</li>
+        <li>A*Star Graduate Scholarship, 2017&ndash;2019.</li>
+        <li>Dean&rsquo;s List &ndash; School of Physical and Mathematical Sciences, NTU, AY 2013/2014.</li>
+        <li>A*Star Chairman&rsquo;s Honours List, 2014.</li>
+        <li>NTU President Research Scholar, as part of the URECA Research Programme, 2014.</li>
+        <li>SMURF: Singapore&ndash;MIT Undergraduate Research Fellowship, as part of an internship at SMART, CREATE, Singapore, 2014.</li>
+        <li>A*STAR Undergraduate Scholarship, 2012&ndash;2016.</li>
+        <li>NTU CN Yang Scholars&rsquo; Programme, 2012&ndash;2016.</li>
+      </ul>
+    </div>
+
+    <hr class="divider" style="margin-top:2.5rem;">
+
+    <div class="news-section">
+      <p class="section-label">Honours &amp; Awards (Mentored Students)</p>
+      <ul class="news-list" style="gap:0.4rem;">
+        <li>Bronze Award, IEEE 6G Summit Singapore&rsquo;s Student Thesis Pitch Competition, to Nan Li, 2026.</li>
+        <li>Entrepreneurship Capstone Team Bungus: Finalist at Singapore MIT15K competition, 2025.</li>
+        <li>Entrepreneurship Capstone Team Fitback: 1st Place, Design AI Award, InspireCon 2025.</li>
+        <li>Entrepreneurship Capstone Teams Fitback (Untradox) and KagaMe: Featured groups for InspireCon 2025.</li>
+      </ul>
+    </div>
+
+    <hr class="divider" style="margin-top:2.5rem;">
+
+    <div class="news-section">
+      <p class="section-label">Code &amp; Resources</p>
+      <div style="display:flex; flex-direction:column; gap:1rem;">
+        <div>
+          <div style="font-weight:600; color:var(--ink); font-size:1rem;">[Project/Tool Name]</div>
+          <div style="font-size:0.87rem; margin-bottom:0.3rem;">Brief description of what this code or resource does and its purpose.</div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider" style="margin-top:2.5rem;">
+
+    <div class="news-section">
+      <p class="section-label">Experience</p>
+      <ul class="news-list" style="gap:0.4rem;">
+        <li><span class="news-date" style="min-width:11rem;">Mar 2024 &ndash; Present</span><span>Faculty Early Career Award (FECA) Fellow / Lecturer, ISTD Pillar, Singapore University of Technology and Design.</span></li>
+        <li><span class="news-date" style="min-width:11rem;">Oct 2021 &ndash; Dec 2023</span><span>Postdoctoral Researcher, Carnegie Mellon University.</span></li>
+        <li><span class="news-date" style="min-width:11rem;">Mar 2021 &ndash; Sep 2021</span><span>Postdoctoral Researcher, Singapore University of Technology and Design.</span></li>
+        <li><span class="news-date" style="min-width:11rem;">Jan 2017 &ndash; Jan 2021</span><span>PhD Candidate, Information Systems Technology and Design, Singapore University of Technology and Design.</span></li>
+        <li><span class="news-date" style="min-width:11rem;">Aug 2012 &ndash; Jul 2016</span><span>BSc. Mathematical Sciences, Nanyang Technological University, Singapore.</span></li>
+        <li><span class="news-date" style="min-width:11rem;">Jan &ndash; Jun 2015</span><span>Exchange Student, University of Bristol, United Kingdom.</span></li>
+        <li><span class="news-date" style="min-width:11rem;">Jun &ndash; Sep 2014</span><span>Intern, Future Urban Mobility Group, Singapore &ndash; MIT Alliance for Research and Technology (SMART), CREATE Research Center, Singapore.</span></li>
+        <li><span class="news-date" style="min-width:11rem;">Jun &ndash; Jul 2013</span><span>Intern, Data Analytics Department, Institute of Infocom Research (I2R), A*Star, Singapore.</span></li>
+        <li><span class="news-date" style="min-width:11rem;">Nov &ndash; Dec 2010</span><span>High School Intern, Fluid Dynamics Department, Institute of High Performance Computing (IHPC), A*Star, Singapore.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ═══ Publications ═══ -->
+  <section class="page" id="page-publications" hidden>
+    <h1 class="page-title">Publications</h1>
+
+    <div class="pub-year-heading">2026</div>
+    <ol class="pub-list">
+      <li class="pub-item"><span class="pub-num">37.</span> Haoran Zhang, Caina Figueiredo Pereira, Marie Siew, Xutong Liu, Carlee Joe-Wong, Rachid El-Azouzi, &ldquo;<span class="pub-name">FedSteer: Taming Extreme Gradient Staleness in Federated Learning with Corrective Projections and Caching</span>&rdquo;, in Proc. Conference on Uncertainty in Artificial Intelligence (<b>UAI</b>) 2026. <a href="https://arxiv.org/pdf/2606.10124">[Preprint]</a></li>
+      <li class="pub-item"><span class="pub-num">36.</span> Yuxin Li, Guangyue Lu, Yinghui Ye, Liqin Shi, Zehui Xiong, Marie Siew, and Tony Q. S. Quek, &ldquo;<span class="pub-name">Phase-Assisted Modulation and Non-Coherent Detection for Ambient Backscatter Communication</span>&rdquo;, in Proc. IEEE International Symposium on Personal, Indoor and Mobile Radio Communication (<b>PIMRC</b>) 2026.</li>
+      <li class="pub-item"><span class="pub-num">35.</span> Yuxin Li, Guangyue Lu, Yinghui Ye, Zehui Xiong, Marie Siew, &ldquo;<span class="pub-name">Symbol Timing Offset Estimation for Ambient Backscatter Communication</span>&rdquo;, in IEEE Transactions on Vehicular Technology (<b>TVT</b>) 2026. <a href="https://ieeexplore.ieee.org/abstract/document/11534113">[Link]</a></li>
+      <li class="pub-item"><span class="pub-num">34.</span> Qiqi Ren, Zhaoji Zhang, Ying Li, Guanghui Song, Marie Siew, Zehui Xiong, &ldquo;<span class="pub-name">Outage Analysis of Uplink Service Coexistence in LEO Satellite Networks With Rate-Splitting Grant-Free Transmission</span>&rdquo;, IEEE Transactions on Wireless Communication (<b>TWC</b>) 2026. <a href="https://ieeexplore.ieee.org/abstract/document/11540409/">[Link]</a></li>
+      <li class="pub-item"><span class="pub-num">33.</span> Yuxin Li, Guangyue Lu, Yinghui Ye, Zehui Xiong, Marie Siew, Liqin Shi, and Xuli Gao, &ldquo;<span class="pub-name">Timing Synchronization and Symbol Detection in Ambient Backscatter Communication</span>&rdquo;, in IEEE Transactions on Wireless Communications (<b>TWC</b>) 2026. <a href="https://ieeexplore.ieee.org/abstract/document/11456334/">[Link]</a></li>
+      <li class="pub-item"><span class="pub-num">32.</span> Baosheng Li, Weifeng Gao, Xiumei Deng, Jin Xie, Zehui Xiong, Marie Siew, Binquan Guo, Shiwen Mao, Zhu Han, &ldquo;<span class="pub-name">Decentralized Federated Learning over Time-Varying and Heterogeneous Mobile Computing Networks</span>&rdquo;, in IEEE Transactions on Mobile Computing (<b>TMC</b>) 2025. <a href="https://ieeexplore.ieee.org/document/11271539">[Link]</a></li>
+      <li class="pub-item"><span class="pub-num">31.</span> Avirup Das, Marie Siew, Xiaoxi Zhang, and David Yau, &ldquo;<span class="pub-name">Fairness-aware Adaptive Throughput Optimization for 5G Wireless Networks</span>&rdquo;, in Proc. IEEE Wireless Communications and Networking Conference (<b>WCNC</b>), Kuala Lumpur, Apr 2026.</li>
+    </ol>
+
+    <div class="pub-year-heading">2025</div>
+    <ol class="pub-list">
+      <li class="pub-item"><span class="pub-num">30.</span> Nan Li, Wanting Yang, Marie Siew, Zehui Xiong, Binbin Chen, Shiwen Mao, Kwok-Yan Lam, &ldquo;<span class="pub-name">Hierarchical Collaborative Fine-Tuning for Personalized Edge-End Hybrid Inference of Stable Diffusion Models</span>&rdquo;, in AAAI 2026 Workshop on Machine Learning for Wireless Communication and Networks, <b>ML4Wireless</b>. <span class="pub-award">Best Student Paper Award!</span></li>
+      <li class="pub-item"><span class="pub-num">29.</span> Jiajia Zhou, Ruonan Zhang, Xiaoqian Yi, Marie Siew, Bin Li, Daosen Zhai, &ldquo;<span class="pub-name">Neural Network-based Vegetation Attenuation Measurement and Modeling for Air-to-Ground Channels</span>&rdquo;, in AAAI 2026 Workshop on Machine Learning for Wireless Communication and Networks, <b>ML4Wireless</b>.</li>
+      <li class="pub-item"><span class="pub-num">28.</span> Xuang Liang, Jianhua Tang, Marie Siew, and Tony Q. S. Quek, &ldquo;<span class="pub-name">Adaptive Clustering-Enabled Large-Scale Decentralized Federated Learning</span>&rdquo;, in IEEE Transactions on Mobile Computing (<b>TMC</b>) 2025. <a href="https://ieeexplore.ieee.org/document/11231365">[Link]</a> <a href="https://www.authorea.com/doi/full/10.22541/au.172797193.38520423">[Preprint]</a></li>
+      <li class="pub-item"><span class="pub-num">27.</span> Marie Siew, Shikhar Sharma, Zekai Li, Kun Guo, Chao Xu, Tania Lorido-Botran, Tony Q. S. Quek and Carlee Joe-Wong, &ldquo;<span class="pub-name">FIRE: A Failure-Adaptive Reinforcement Learning Framework for Edge Computing Migrations</span>&rdquo;, in IEEE Transactions on Services Computing (<b>TSC</b>) 2025. <a href="https://ieeexplore.ieee.org/document/11223793">[Paper]</a> <a href="https://arxiv.org/abs/2209.14399">[Preprint]</a> <a href="https://github.com/ShikhSh/MultiUser-FIRE">[Code]</a></li>
+      <li class="pub-item"><span class="pub-num">26.</span> Binquan Guo, Junteng Cao, Marie Siew, Binbin Chen, Tony Q.S. Quek, Han Zhu, &ldquo;<span class="pub-name">Accelerating Privacy-Preserving Federated Learning in Large-Scale LEO Satellite Systems</span>&rdquo;, in Proc. IEEE International Conference on Trust, Security and Privacy in Computing and Communications (<b>TrustCom</b>), Guiyang, Nov 2025. <a href="https://arxiv.org/pdf/2509.12222">[Preprint]</a></li>
+      <li class="pub-item"><span class="pub-num">25.</span> Bin Yang, Xuan Liang, Jianhua Tang, Marie Siew, &ldquo;<span class="pub-name">Buffer-Aided Semi-Asynchronous Federated Learning</span>&rdquo;, in Proc. IEEE International Conference on Communication Technology (<b>ICCT</b>), Shenyang, Oct 2025.</li>
+      <li class="pub-item"><span class="pub-num">24.</span> Ruide Cao, Marie Siew, David Yau, &ldquo;<span class="pub-name">A User-to-User Resource Reselling Game in Open RAN with Buffer Rollover</span>&rdquo;, in Proc. IEEE Global Communications Conference (<b>GLOBECOM</b>), Taipei, Dec 2025. <a href="https://arxiv.org/abs/2509.19392">[Preprint]</a></li>
+      <li class="pub-item"><span class="pub-num">23.</span> Xuang Liang, Jianhua Tang, and Marie Siew, &ldquo;<span class="pub-name">Decentralized Federated Learning Framework for Social IoT with Dynamic Network Topology</span>&rdquo;, IEEE Internet of Things Journal (<b>IoTJ</b>) 2025. <a href="https://ieeexplore.ieee.org/document/11067955">[Link]</a></li>
+      <li class="pub-item"><span class="pub-num">22.</span> Marie Siew, Haoran Zhang, Jong-Ik Park, Yuezhou Liu, Yichen Ruan, Lili Su, Stratis Ioannidis, Edmund Yeh, and Carlee Joe-Wong, &ldquo;<span class="pub-name">Fair Concurrent Training of Multiple Models in Federated Learning</span>&rdquo;, IEEE Transactions on Networking (<b>TON</b>) 2025. <a href="https://ieeexplore.ieee.org/document/11047262">[Link]</a> <a href="https://arxiv.org/abs/2404.13841">[Preprint]</a></li>
+      <li class="pub-item"><span class="pub-num">21.</span> Kai Han, Marie Siew*, Bingbing Xu, Shengjun Guo, Wenbin Gong*, Tony Q. S. Quek*, and Qianyi Ren, &ldquo;<span class="pub-name">On-Demand Optimization Method for Cross-Layer Topology in Multi-Task VLEO and Mega-LEO Heterogeneous Satellite Networks</span>&rdquo;, IEEE Transactions on Wireless Communication (<b>TWC</b>) 2025. <a href="https://ieeexplore.ieee.org/document/11029182">[Link]</a> <a href="https://www.techrxiv.org/doi/full/10.36227/techrxiv.172054205.51243418/v1">[Preprint]</a> *corresponding authors</li>
+      <li class="pub-item"><span class="pub-num">20.</span> Zejun Gong<sup>^</sup>, Haoran Zhang<sup>^</sup>, Marie Siew, Carlee Joe-Wong, Rachid El-Azouzi, &ldquo;<span class="pub-name">Group-based Client Sampling in Multi-Model Federated Learning</span>&rdquo;, in Proc. IEEE Vehicular Technology Conference (<b>VTC</b>) &ndash; Spring, Oslo, June 2025. <a href="https://ieeexplore.ieee.org/document/11174649">[Link]</a> <sup>^</sup>co-first authors</li>
+      <li class="pub-item"><span class="pub-num">19.</span> Hanqing Yang, Jingdi Chen, Marie Siew, Tania Lorido-Botran, Carlee Joe-Wong, &ldquo;<span class="pub-name">LLM-Powered Decentralized Generative Agents with Adaptive Hierarchical Knowledge Graph for Cooperative Planning</span>&rdquo;, AAAI 2025 Workshop on Multi-Agent AI in the Real World (<b>MARW</b>), Philadelphia, March 2025. <a href="https://happyeureka.github.io/damcs/">[Project]</a> <a href="https://arxiv.org/pdf/2502.05453">[Paper]</a> <a href="https://github.com/13RENDA/Mcrafter_LLM_Agent">[Code]</a></li>
+      <li class="pub-item"><span class="pub-num">18.</span> Aditya Kumar<sup>^</sup>, Hanqing Yang<sup>^</sup>, Wai Shun Lee, Jet Wei Goh, Carlee Joe-Wong, Marie Siew, &ldquo;<span class="pub-name">Towards Adversarially Robust Human-in-the-loop Learning for HVAC Systems</span>&rdquo;, AAAI 2025 Workshop on Artificial Intelligence for Wireless Communications and Networking (<b>AI4WCN</b>), Philadelphia, March 2025. <a href="https://openreview.net/forum?id=4Cdf8XL1YC">[Paper]</a> <sup>^</sup>co-first authors. *The first &amp; fourth authors are SUTD undergraduate students.</li>
+    </ol>
+
+    <div class="pub-year-heading">2024</div>
+    <ol class="pub-list">
+      <li class="pub-item"><span class="pub-num">17.</span> Kai Han, Marie Siew*, Bingbing Xu, Shengjun Guo, Tianxiang Wang, Wenbin Gong*, Tony Q. S. Quek*, and Qianyi Ren, &ldquo;<span class="pub-name">A Distributed Collaborative Data Relay Method: VLEO Earth Observation Constellation Cross-Layer Access to the Mega-LEO Satellite Internet</span>&rdquo;, IEEE Internet of Things Journal (<b>IoTJ</b>), 2024. <a href="https://ieeexplore.ieee.org/abstract/document/10772451">[Link]</a></li>
+      <li class="pub-item"><span class="pub-num">16.</span> Kai Han, Bingbing Xu, Marie Siew*, Wenbin Gong*, Tony Q. S. Quek*, and Qianyi Ren, &ldquo;<span class="pub-name">Distributed Multi-objective Topology Optimization Method in VLEO-LEO Satellite Networks</span>&rdquo;, in Proc. IEEE Global Communications Conference (<b>GLOBECOM</b>), Cape Town, South Africa, December 2024. <a href="https://ieeexplore.ieee.org/document/10901675">[Link]</a> *corresponding authors</li>
+      <li class="pub-item"><span class="pub-num">15.</span> Haoran Zhang, Zekai Li, Zejun Gong, Marie Siew*, Carlee Joe-Wong, Rachid El-Azouzi, &ldquo;<span class="pub-name">Optimal Variance-Reduced Client Sampling for Multiple Model Federated Learning</span>&rdquo;, in Proc. IEEE International Conference on Distributed Computing Systems (<b>ICDCS</b> Posters), Jersey City, July 2024. <a href="https://haoran-zh.github.io/Publications/ICDCS_Poster_MMFL_optimal_sampling__gradient_norm_.pdf">[Preprint]</a> <a href="https://haoran-zh.github.io/data/ICDCS_poster.pdf">[Poster]</a> *corresponding author <span class="pub-award">Best Poster Award!</span></li>
+      <li class="pub-item"><span class="pub-num">14.</span> Hanqing Yang, Marie Siew*, and Carlee Joe-Wong, &ldquo;<span class="pub-name">An LLM-Based Digital Twin for Optimizing Human-in-the Loop Systems</span>&rdquo;, in Proc. International Workshop on Foundation Models for Cyber-Physical Systems &amp; Internet of Things (<b>FMSys</b>), held at CPS-IoT Week, Hong Kong, May 2024. <a href="https://github.com/HappyEureka/LLM_digital_twin">[Code]</a> <a href="https://ieeexplore.ieee.org/document/10590311">[Paper]</a> <a href="https://arxiv.org/abs/2403.16809">[Preprint]</a> *corresponding author</li>
+    </ol>
+
+    <div class="pub-year-heading">2023</div>
+    <ol class="pub-list">
+      <li class="pub-item"><span class="pub-num">13.</span> Sha Xie, Marie Siew, Lingxiang Li, Zhi Chen, Tianlong Yang, &ldquo;<span class="pub-name">Minimizing the THz Communication Outage Probability with ISAC for Delay-Sensitive Services</span>&rdquo;, in Proc. IEEE Global Communications Conference (<b>GLOBECOM</b>), Kuala Lumpur, December 2023. <a href="https://ieeexplore.ieee.org/document/10437612">[Link]</a></li>
+      <li class="pub-item"><span class="pub-num">12.</span> Marie Siew, Shikhar Sharma, Kun Guo, Desmond Cai, Wanli Wen, Carlee Joe-Wong, Tony Q. S. Quek, &ldquo;<span class="pub-name">Towards Effective Resource Procurement in MEC: a Resource Re-selling Framework</span>&rdquo;, IEEE Trans. Services Computing (<b>TSC</b>), 2023. <a href="https://ieeexplore.ieee.org/document/10323475">[Paper]</a> <a href="https://arxiv.org/abs/2203.00825">[Preprint]</a></li>
+      <li class="pub-item"><span class="pub-num">11.</span> Xiongyue Wu, Jianhua Tang, and Marie Siew, &ldquo;<span class="pub-name">Digital Twin-assisted Semi-Federated Learning Framework for Industrial Edge Intelligence</span>&rdquo;, <b>China Communications</b>, 2023. <a href="https://ieeexplore.ieee.org/document/10495817">[Link]</a></li>
+      <li class="pub-item"><span class="pub-num">10.</span> Yuezhou Liu, Lili Su, Carlee Joe-Wong, Stratis Ioannidis, Edmund Yeh, Marie Siew, &ldquo;<span class="pub-name">Cache Enabled Federated Learning Systems</span>&rdquo;, in Proc. International Symposium on Theory, Algorithmic Foundations, and Protocol Design for Mobile Networks and Mobile Computing (ACM <b>MobiHoc</b>), Washington DC, October 2023. <a href="https://dl.acm.org/doi/abs/10.1145/3565287.3610264">[Link]</a></li>
+      <li class="pub-item"><span class="pub-num">9.</span> Shuying Gan, Marie Siew, Chao Xu and Tony Q. S. Quek, &ldquo;<span class="pub-name">Differentially Private Deep Q-Learning for Pattern Privacy Preservation in MEC Offloading</span>&rdquo;, in Proc. IEEE International Conference on Communications (<b>ICC</b>), Rome, May 2023. <a href="https://ieeexplore.ieee.org/document/10278840">[Link]</a> <a href="https://arxiv.org/abs/2302.04608">[Preprint]</a></li>
+      <li class="pub-item"><span class="pub-num">8.</span> Marie Siew, Shoba Arunasalam, Yichen Ruan, Ziwei Zhu, Lili Su, Stratis Ioannidis, Edmund Yeh, and Carlee Joe-Wong, &ldquo;<span class="pub-name">Fair Training of Multiple Federated Learning Models on Resource Constrained Network Devices</span>&rdquo;, in Proc. ACM/IEEE International Conference on Information Processing in Sensor Networks (<b>IPSN</b> Posters, CPS-IoT Week), San Antonio, May 2023. <a href="https://dl.acm.org/doi/abs/10.1145/3583120.3589835">[Link]</a> <span class="pub-award">Best Poster Award!</span></li>
+      <li class="pub-item"><span class="pub-num">7.</span> Marie Siew, Shikhar Sharma, and Carlee Joe-Wong, &ldquo;<span class="pub-name">ACRE: Actor Critic Reinforcement Learning for Failure-Aware Edge Computing Migrations</span>&rdquo;, in Proc. IEEE Conference on Information Science and Systems (<b>CISS</b>), Baltimore, March 2023. <a href="https://ieeexplore.ieee.org/abstract/document/10089694">[Link]</a></li>
+    </ol>
+
+    <div class="pub-year-heading">2021</div>
+    <ol class="pub-list">
+      <li class="pub-item"><span class="pub-num">6.</span> Lingxiang Li, Marie Siew, Tony Q. S. Quek, and Zhi Chen, &ldquo;<span class="pub-name">Optimal Pricing for Job Offloading in the MEC System with Two Priority Classes</span>&rdquo;, IEEE Trans. Vehicular Technology (<b>TVT</b>), vol. 70, no. 8, pp. 8080&ndash;8091, Aug. 2021. <a href="https://arxiv.org/abs/1905.07749">[Link]</a></li>
+      <li class="pub-item"><span class="pub-num">5.</span> Marie Siew, Kun Guo, Desmond Cai, Lingxiang Li, and Tony Q. S. Quek, &ldquo;<span class="pub-name">Let&rsquo;s Share VMs: Optimal Placement and Pricing across Base Stations in MEC Systems</span>&rdquo;, in Proc. IEEE International Conference on Computer Communications (<b>INFOCOM</b>), May 2021. <a href="https://ieeexplore.ieee.org/abstract/document/9488854">[Link]</a> <a href="https://arxiv.org/abs/2101.06129">[Preprint]</a></li>
+    </ol>
+
+    <div class="pub-year-heading">2020</div>
+    <ol class="pub-list">
+      <li class="pub-item"><span class="pub-num">4.</span> Marie Siew, Desmond Cai, Lingxiang Li, and Tony Q. S. Quek, &ldquo;<span class="pub-name">A Sharing-Economy Inspired Pricing Mechanism for Multi-Access Edge Computing</span>&rdquo;, in Proc. IEEE Global Communications Conference (<b>GLOBECOM</b>), Taipei, Dec 2020. <a href="https://ieeexplore.ieee.org/abstract/document/9322554">[Link]</a></li>
+      <li class="pub-item"><span class="pub-num">3.</span> Marie Siew, Desmond Cai, Lingxiang Li, Tony Q. S. Quek, &ldquo;<span class="pub-name">Dynamic Pricing for Resource-Quota Sharing in Multi-Access Edge Computing</span>&rdquo;, IEEE Trans. Network Science and Engineering (<b>TNSE</b>), vol. 7, no. 4, pp. 2901&ndash;2912, Oct 2020. <a href="https://ieeexplore.ieee.org/abstract/document/9119833">[Link]</a></li>
+      <li class="pub-item"><span class="pub-num">2.</span> Zhi Chen, Lingxiang Li, Marie Siew, and Tony Q. S. Quek, &ldquo;<span class="pub-name">Edge/Fog Computing Networks</span>&rdquo;, in <b>Wiley 5G Ref</b>, 2020. <a href="https://onlinelibrary.wiley.com/doi/abs/10.1002/9781119471509.w5GRef086">[Link]</a></li>
+    </ol>
+
+    <div class="pub-year-heading">2019</div>
+    <ol class="pub-list">
+      <li class="pub-item"><span class="pub-num">1.</span> Lingxiang Li, Marie Siew, and Tony Q. S. Quek, &ldquo;<span class="pub-name">Learning-Based Pricing for Privacy-Preserving Job Offloading in Mobile Edge Computing</span>&rdquo;, in Proc. IEEE International Conference on Acoustics, Speech and Signal Processing (<b>ICASSP</b>), Brighton, UK, May 2019. <a href="https://ieeexplore.ieee.org/document/8682862">[Link]</a></li>
+    </ol>
+  </section>
+
+  <!-- ═══ Teaching ═══ -->
+  <section class="page" id="page-teaching" hidden>
+    <h1 class="page-title">Teaching</h1>
+
+    <div class="exp-section">
+      <h2>As Instructor</h2>
+      <ul class="news-list" style="gap:0.4rem;">
+        <li><span style="color:var(--accent)">50.041 Distributed Systems and Computing</span>, SUTD (Spring 2026)</li>
+        <li><span style="color:var(--accent)">01.400 Capstone</span>, SUTD (Fall 2025&ndash;Spring 2026)</li>
+        <li><span style="color:var(--accent)">10.014 Computational Thinking and Design (CTD)</span>, SUTD (Fall 2025)</li>
+        <li><span style="color:var(--accent)">Computational Thinking and Design (CTD) Bootcamp</span>, SUTD (Spring 2025)</li>
+        <li><span style="color:var(--accent)">10.014 Computational Thinking and Design (CTD)</span>, SUTD (Fall 2024)</li>
+        <li><span style="color:var(--accent)">01.400 Capstone</span>, SUTD (Fall 2024&ndash;Spring 2025)</li>
+      </ul>
+    </div>
+
+    <div class="exp-section">
+      <h2>As Teaching Assistant</h2>
+      <ul class="news-list" style="gap:0.4rem;">
+        <li>Teaching Assistant for <span style="color:var(--accent)">50.038 Computational Data Science</span>, SUTD (2018)</li>
+        <li>Assistant Mentor for <span style="color:var(--accent)">CY1500 Introductory Research Methodology</span>, NTU (2015)</li>
+        <li>Teaching Assistant for <span style="color:var(--accent)">MH1401 Algorithms and Computing 1</span>, NTU (2015)</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ═══ Service ═══ -->
+  <section class="page" id="page-experience" hidden>
+    <h1 class="page-title">Service</h1>
+
+    <div class="exp-section">
+      <h2>Conference / Workshop Organization</h2>
+      <ul class="news-list">
+        <li>TPC Co-Chair, Workshop on Advanced Array Signal Processing and Parameter Estimation for Space-Air-Ground-Ocean Integrated Networks (SAGOINs), ICAIT 2026.</li>
+        <li>TPC Co-Chair, Ubiquitous Connectivity for Agentic and Physical AI (Con4AP) Workshop, UbiComp / ISWC 2026. <a href="https://con4ap.github.io/">[Call for papers]</a></li>
+        <li>Track Chair, Workshop on Electronics Communication Engineering (WECE) 2026.</li>
+        <li>Publication Chair, IEEE TrustCom 2025.</li>
+        <li>Publication Chair, IEEE BigDataSE 2025.</li>
+        <li>TPC Co-Chair, Workshop on the Economics of Fog, Edge and Cloud Computing (ECOFEC), IEEE SECON 2022.</li>
+      </ul>
+    </div>
+
+    <div class="exp-section">
+      <h2>Panelist</h2>
+      <ul class="news-list">
+        <li>N2 Women Event, ACM Mobihoc 2023: &ldquo;Charting your Academic Journey: Wisdom from Women in Research&rdquo;.</li>
+      </ul>
+    </div>
+
+    <div class="exp-section">
+      <h2>Guest Editor</h2>
+      <div class="exp-entry">
+        <div class="exp-role">Themed Collection</div>
+        <div class="exp-dates"></div>
+        <div class="exp-org">&ldquo;UAV-Enabled Air-Ground Integrated Networks and Intelligent Optimization&rdquo;, <em>Computers, Materials &amp; Continua</em></div>
+      </div>
+    </div>
+
+    <div class="exp-section">
+      <h2>Judge</h2>
+      <ul class="news-list">
+        <li>SUTD What the Hack Hackathon 2024.</li>
+      </ul>
+    </div>
+
+    <div class="exp-section">
+      <h2>Session Chair</h2>
+      <ul class="news-list">
+        <li>IEEE GLOBECOM 2025, Session on Open RAN and Resource Allocation.</li>
+        <li>IEEE CISS 2023, Session on Networks III.</li>
+      </ul>
+    </div>
+
+    <div class="exp-section">
+      <h2>Technical Program Committee (TPC) Member</h2>
+      <ul class="news-list">
+        <li><span class="news-date">2027</span><span>IEEE INFOCOM 2027.</span></li>
+        <li><span class="news-date">2026</span><span>WiOpt 2026, IEEE MASS 2026, IEEE VTS APWCS 2026, IEEE ICCT 2026, ACM SIGMETRICS 2026 Student Research Competition, AutoSys Workshop at MobiSys 2026, NetCompute Workshop at IEEE INFOCOM 2026.</span></li>
+        <li><span class="news-date">2025</span><span>IEEE MASS 2025, WiOpt 2025, ACM/SIGAPP SAC 2025.</span></li>
+        <li><span class="news-date">2024</span><span>WiOpt 2024, IEEE MASS 2024, IEEE Cloud Summit 2024, CISSE 2024, SLICE Workshop at IEEE MASS 2024.</span></li>
+        <li><span class="news-date">2023</span><span>WiOpt 2023.</span></li>
+        <li><span class="news-date">2022</span><span>CrossFL Workshop at MLSys 2022.</span></li>
+        <li><span class="news-date">2021</span><span>ACM MobiCom 2021 Posters/Student Research Competition.</span></li>
+      </ul>
+    </div>
+
+    <div class="exp-section">
+    <div class="exp-section">
+      <h2>Reviewer for Journals</h2>
+      <ul class="news-list" style="gap:0.4rem;">
+        <li>IEEE Transactions on Networking</li>
+        <li>IEEE Journal on Selected Areas in Communications</li>
+        <li>IEEE Transactions on Mobile Computing</li>
+        <li>IEEE Transactions on Wireless Communications</li>
+        <li>IEEE Wireless Communications Magazine</li>
+        <li>IEEE Transactions on Information Forensics and Security</li>
+        <li>IEEE Transactions on Cloud Computing</li>
+        <li>IEEE Transactions on Communications</li>
+        <li>ACM Transactions on Sensor Networks</li>
+        <li>IEEE Internet of Things Journal</li>
+        <li>IEEE Transactions on Network Science and Engineering</li>
+        <li>IEEE Transactions on Vehicular Technology</li>
+        <li>Digital Communications and Networks</li>
+      </ul>
+    </div>
+
+    <div class="exp-section">
+      <h2>Invited Talks</h2>
+      <ul class="news-list">
+        <li><span class="news-date">Aug 2026</span><span>CWI Amsterdam.</span></li>
+        <li><span class="news-date">Aug 2026</span><span>SUTD ISTD Pillar Seminar.</span></li>
+        <li><span class="news-date">Jun 2026</span><span>Beijing University of Posts and Telecommunications, China (Online).</span></li>
+        <li><span class="news-date">Apr 2026</span><span>Lorong AI, Singapore.</span></li>
+        <li><span class="news-date">May 2025</span><span>Beijing Jiaotong University, China.</span></li>
+        <li><span class="news-date">May 2025</span><span>Beijing Institute of Technology, China.</span></li>
+        <li><span class="news-date">Apr 2025</span><span>Harbin Institute of Technology, Shenzhen, Low-Latency Sensing, Communications, and Intelligence Group (Online).</span></li>
+        <li><span class="news-date">May 2024</span><span>Hong Kong Metropolitan University, Intelligent Communications and Ubiquitous Connectivity (ICUC) Laboratory.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ═══ Group ═══ -->
+  <section class="page" id="page-group" hidden>
+    <h1 class="page-title">Group</h1>
+
+    <div class="exp-section">
+      <h2>Current Members</h2>
+      <ul class="group-list">
+        <li><div class="group-name">[Student Name]</div><div class="group-detail">PhD Student, joined 2024</div></li>
+        <li><div class="group-name">[Student Name]</div><div class="group-detail">PhD Student, joined 2024</div></li>
+        <li><div class="group-name">[Student Name]</div><div class="group-detail">Visiting Student, joined 2025</div></li>
+      </ul>
+    </div>
+
+    <div class="exp-section">
+      <h2>Alumni</h2>
+      <ul class="group-list">
+        <li><div class="group-name">[Former Member Name]</div><div class="group-detail">Visiting Student, 2024&ndash;2025</div></li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">Last updated September 2026</div>
+</footer>
+
+<script>
+(function() {
+  var current = 'about';
+
+  function showPage(name) {
+    if (name === current) return;
+    document.getElementById('page-' + current).hidden = true;
+    document.getElementById('page-' + name).hidden = false;
+    document.querySelector('.nav-links a.active').classList.remove('active');
+    document.querySelector('.nav-links a[data-nav="' + name + '"]').classList.add('active');
+    current = name;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  document.querySelectorAll('[data-nav]').forEach(function(el) {
+    el.addEventListener('click', function() { showPage(this.getAttribute('data-nav')); });
+    el.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        showPage(this.getAttribute('data-nav'));
+      }
+    });
+  });
+
+  var newsScroll = document.getElementById('news-scroll');
+  var newsFade = document.getElementById('news-fade');
+  if (newsScroll && newsFade) {
+    newsScroll.addEventListener('scroll', function() {
+      var atBottom = newsScroll.scrollHeight - newsScroll.scrollTop - newsScroll.clientHeight < 4;
+      newsFade.classList.toggle('scrolled-bottom', atBottom);
+    });
+  }
+})();
+</script>
+</body>
+</html>
